@@ -12,6 +12,7 @@ import           System.Exit (ExitCode (ExitFailure))
 import           System.IO (hPutStrLn, stderr)
 import           System.Posix.Process (exitImmediately)
 
+import           Database (chatroomUuid)
 import           Fork (fork)
 
 startWorkers ::
@@ -34,6 +35,14 @@ dialog db conn = do
   -- send object update requests
   -- fork $
   do
+    ops <- fmap fold $ Store.runStore db $ Store.loadObjectLog chatroomUuid mempty
+    let netMessage = ObjectOps chatroomUuid ops
+    if null ops then do
+        putLog "No ops for chatroom"
+      else do
+        putLog $ "Log for chatroom " <> show netMessage
+    WS.sendBinaryData conn $ Aeson.encode netMessage
+   
     objectSubscriptions <- Store.readObjectSubscriptions db
     for_ objectSubscriptions $ \object ->
       WS.sendBinaryData conn =<< encodeNetMessage RequestChanges{object}

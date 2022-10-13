@@ -80,6 +80,7 @@ executable demo-chat
         OverloadedStrings
         RecordWildCards
         ScopedTypeVariables
+        TemplateHaskell
         TypeApplications
         TypeFamilies
     ghc-options: -dynamic -rtsopts -with-rtsopts=-N
