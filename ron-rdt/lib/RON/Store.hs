@@ -1,4 +1,5 @@
 {-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE NamedFieldPuns #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE ScopedTypeVariables #-}
 {-# LANGUAGE TypeApplications #-}
@@ -11,6 +12,7 @@ module RON.Store (
 
 import           RON.Prelude
 
+import           Data.List (stripPrefix)
 import           RON.Data.Experimental (Rep, ReplicatedObject, replicatedTypeId,
                                         stateFromFrame, view)
 import           RON.Error (MonadE, errorContext)
@@ -42,7 +44,12 @@ readObject object@(Ref objectId path) =
         fmap Just $
         view objectId $
         stateFromFrame objectId $
-        sortOn opId $ filter ((path `isPrefixOf`) . payload) ops
+        sortOn
+          opId
+          [ op{payload = payload'}
+          | op@Op{payload} <- ops
+          , Just payload' <- [stripPrefix path payload]
+          ]
 
 -- TODO: Check when this was introduced, and if is needed
 -- | Append an arbitrary sequence of operations to an object. No preconditions.
