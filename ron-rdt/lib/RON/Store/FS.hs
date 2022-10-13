@@ -78,7 +78,7 @@ instance MonadStore Store where
           if exists then listDirectoryDirs dataDir else pure []
       traverse uuidFromFileName objectDirs
 
-  appendPatch = appendPatchFS
+  appendPatchFromOneOrigin = appendPatchFS
 
   loadObjectLog = loadObjectLogFS
 
