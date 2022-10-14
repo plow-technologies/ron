@@ -38,7 +38,7 @@ library
         mtl,
         network-info,
         stm,
-        text,
+        text >= 2.0,
         transformers,
         tf-random,
         unliftio-core,

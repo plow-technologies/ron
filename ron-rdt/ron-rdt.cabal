@@ -43,7 +43,7 @@ library
         mtl,
         network-info,
         stm,
-        text,
+        text >= 2.0,
         tf-random,
         time,
         transformers,

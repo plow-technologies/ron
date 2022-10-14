@@ -37,7 +37,7 @@ library
         megaparsec,
         mtl,
         template-haskell,
-        text,
+        text >= 2.0,
         transformers,
         -- project
         ron     >= 0.9,
