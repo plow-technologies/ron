@@ -48,6 +48,7 @@ import qualified Data.HashMap.Strict as HashMap
 import           Data.Map.Strict ((!?))
 import qualified Data.Map.Strict as Map
 import qualified Data.Text as Text
+import           Data.List (nubBy)
 
 import           RON.Data.Internal (MonadObjectState,
                                     Editable (..),
