@@ -5,6 +5,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0)
 and this project adheres to
 [Compatible Versioning](https://github.com/staltz/comver).
 
+## [0.12.1] - 2026-03-16
+* Added some duplicate operation removal to `vertexListFromOps`
+* Changed `applyPatch` to prefer new operations over existing ones when
+  updating the `HashMap UUID VertexListItem`.
+
 ## [0.12] - 2022-03-11
 - Added `Editable` typeclass which generalizes RON.Data.RGA.edit
 

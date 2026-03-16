@@ -48,6 +48,7 @@ import qualified Data.HashMap.Strict as HashMap
 import           Data.Map.Strict ((!?))
 import qualified Data.Map.Strict as Map
 import qualified Data.Text as Text
+import           Data.List (nubBy)
 
 import           RON.Data.Internal (MonadObjectState,
                                     Editable (..),
@@ -119,7 +120,7 @@ vertexListToOps v@VertexList {..} = go listHead listItems
        in itemValue : rest
 
 vertexListFromOps :: [Vertex] -> Maybe VertexList
-vertexListFromOps = foldr go mempty
+vertexListFromOps = foldr go mempty . nubBy (\Op{opId = opIdA} Op{opId = opIdB} -> opIdA == opIdB)
   where
     go v@Op{opId} vlist = Just VertexList{listHead = opId, listItems = vlist'}
       where
@@ -276,7 +277,7 @@ applyPatch parent patch targetItems = case parent of
           Nothing -> patch
           Just next -> VertexList next targetItems <> patch
     let item' = item {itemNext = Just next'}
-    pure $ HashMap.insert parent item' targetItems <> newItems
+    pure $ HashMap.insert parent item' newItems <> targetItems
 
 reapplyRemovalsToState :: (RgaRep, PatchSet) -> Maybe (RgaRep, PatchSet)
 reapplyRemovalsToState (RgaRep rstate, ps@PatchSet {..}) = do
